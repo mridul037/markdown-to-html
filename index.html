@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown to HTML Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-color: #f0f2f5;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 900px;
+            gap: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .panel {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            padding: 1rem;
+        }
+        .panel label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: #555;
+        }
+        #markdown-input {
+            font-family: monospace;
+            resize: none;
+            height: 500px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            outline: none;
+        }
+        #markdown-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+        }
+        .output {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            height: 500px;
+            padding: 1rem;
+            overflow-y: auto;
+            background: #f9f9f9;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel">
+            <label for="markdown-input">Markdown Input</label>
+            <textarea id="markdown-input" placeholder="Type Markdown here..."></textarea>
+        </div>
+        <div class="panel">
+            <label for="html-output">HTML Output</label>
+            <div class="output" id="html-output"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import init, { convert_markdown_to_html } from "./pkg/rust_project.js";
+
+        async function run() {
+            await init();
+            const input = document.getElementById("markdown-input");
+            const output = document.getElementById("html-output");
+
+            input.addEventListener("input", () => {
+                const markdownText = input.value;
+                const html = convert_markdown_to_html(markdownText);
+                output.innerHTML = html;
+            });
+        }
+
+        run();
+    </script>
+</body>
+</html>
